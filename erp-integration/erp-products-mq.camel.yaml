@@ -1,0 +1,28 @@
+- rest:
+    id: rest3c2b
+    description: ERP Products Service
+    path: products
+    get:
+      - id: get1f32
+        to: direct:erp-products-route
+- route:
+    id: routecdb6
+    nodePrefixId: route518
+    from:
+      id: from4620
+      description: Request from erp-products-request
+      uri: kamelet:spring-rabbitmq-source
+      parameters:
+        host: rabbitmq
+        port: 5672
+        queues: erp-products-request
+      steps:
+        - log:
+            id: loge119
+            message: "Received products request from MQ: ${body}"
+        - to:
+            id: todd36
+            description: Call erp-products-route
+            uri: direct
+            parameters:
+              name: erp-products-route
