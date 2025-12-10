@@ -1,0 +1,7 @@
+- rest:
+    id: rest5e5f
+    description: ERP Products Service
+    path: products
+    get:
+      - id: getd39d
+        to: direct:erp-products-route

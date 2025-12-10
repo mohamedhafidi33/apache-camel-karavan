@@ -1,0 +1,41 @@
+- route:
+    id: route-direct-erp-products-route
+    description: Direct Erp Products Route
+    nodePrefixId: route-direct-erp-products-route
+    from:
+      id: fromdb2b
+      uri: direct
+      parameters:
+        name: erp-products-route
+      steps:
+        - log:
+            id: log9070
+            message: body
+        - to:
+            id: tod745
+            uri: kamelet:drop-headers-action
+            parameters:
+              pattern: CamelHttp*
+        - to:
+            id: to2101
+            uri: http
+            parameters:
+              httpUri: http://host.docker.internal:4004/odata/v4/simple-erp/Products
+              httpMethod: GET
+              authMethod: Basic
+              authPassword: "{{env:ERP_PASSWORD}}"
+              authUsername: "{{env:ERP_USER}}"
+        - unmarshal:
+            id: unmarshal7ece
+            json:
+              id: json03f8
+        - setBody:
+            id: setBodyff2b
+            expression:
+              simple:
+                id: simplea77b
+                expression: ${body[value]}
+        - marshal:
+            id: marshalf123
+            json:
+              id: jsona384
